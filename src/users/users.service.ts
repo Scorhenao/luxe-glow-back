@@ -17,7 +17,7 @@ export class UsersService implements OnModuleInit {
         if (!userExists) {
             const hash = await bcrypt.hash('123456', 10);
             const user = this.repo.create({
-                email: 'admin@example.com',
+                email: 'fercitacriollo@gmail.com',
                 password: hash,
             });
             await this.repo.save(user);
