@@ -7,9 +7,16 @@ async function bootstrap() {
 
     const config = new DocumentBuilder()
         .setTitle('Auth API')
-        .setDescription('Login with JWT + bcrypt')
+        .setDescription('Luxe Glow API description')
         .setVersion('1.0')
-        .addBearerAuth()
+        .addBearerAuth(
+            {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT',
+            },
+            'jwt',
+        )
         .build();
 
     const document = SwaggerModule.createDocument(app, config);

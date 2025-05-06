@@ -7,6 +7,7 @@ import {
     Delete,
     HttpCode,
     HttpStatus,
+    UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -17,8 +18,12 @@ import {
     ApiResponse,
     ApiParam,
     ApiBody,
+    ApiBearerAuth,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@ApiBearerAuth('jwt')
+@UseGuards(JwtAuthGuard)
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {

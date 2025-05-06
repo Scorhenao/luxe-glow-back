@@ -25,4 +25,14 @@ export class AuthService {
         const payload = { sub: user.id, email: user.email };
         return { access_token: this.jwtService.sign(payload) };
     }
+
+    async validateToken(token: string) {
+        try {
+            const decoded = this.jwtService.verify(token);
+            return decoded;
+        } catch (err: any) {
+            console.log(err);
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
 }

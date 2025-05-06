@@ -4,7 +4,7 @@ import { Category } from 'src/categories/category.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'varchar', length: 255, unique: true })
     name: string;
 
     @Column({ type: 'varchar', length: 255 })
@@ -17,7 +17,7 @@ export class Product extends BaseEntity {
     stock: number;
 
     @Column({ type: 'varchar', nullable: true })
-    imageUrl: string;
+    imageUrl?: string;
 
     @ManyToOne(() => Category, (category) => category.products)
     @JoinColumn({ name: 'categoryId' })

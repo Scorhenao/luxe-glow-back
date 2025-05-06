@@ -2,12 +2,22 @@ import {
     Controller,
     Post,
     UploadedFile,
+    UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { ApiConsumes, ApiBody, ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+    ApiConsumes,
+    ApiBody,
+    ApiTags,
+    ApiOperation,
+    ApiBearerAuth,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@ApiBearerAuth('jwt')
+@UseGuards(JwtAuthGuard)
 @ApiTags('upload')
 @Controller('upload')
 export class UploadController {
