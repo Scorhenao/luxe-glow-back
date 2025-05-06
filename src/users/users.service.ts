@@ -12,7 +12,7 @@ export class UsersService implements OnModuleInit {
 
     async onModuleInit() {
         const userExists = await this.repo.findOneBy({
-            email: 'admin@example.com',
+            email: 'fercitacriollo@gmail.com',
         });
         if (!userExists) {
             const hash = await bcrypt.hash('123456', 10);
