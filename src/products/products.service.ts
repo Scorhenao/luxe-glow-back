@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -22,6 +23,25 @@ export class ProductsService {
 
         const product = this.repo.create(dto);
         return this.repo.save(product);
+    }
+
+    async update(
+        id: string,
+        dto: UpdateProductDto,
+        file?: Express.Multer.File,
+    ): Promise<Product> {
+        const product = await this.repo.findOne({ where: { id } });
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        if (file) {
+            const imageUrl = await this.cloudinaryService.uploadImage(file);
+            dto.imageUrl = imageUrl;
+        }
+
+        const updated = this.repo.merge(product, dto);
+        return this.repo.save(updated);
     }
 
     findAll() {

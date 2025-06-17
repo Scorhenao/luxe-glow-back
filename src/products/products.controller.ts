@@ -10,6 +10,7 @@ import {
     UseGuards,
     UseInterceptors,
     UploadedFile,
+    Patch,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -24,6 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @ApiBearerAuth('jwt')
 @ApiTags('Products')
@@ -42,6 +44,21 @@ export class ProductsController {
         @UploadedFile() file: Express.Multer.File, // <- Recibe el archivo
     ): Promise<Product> {
         return this.productsService.create(createProductDto, file);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id')
+    @UseInterceptors(FileInterceptor('file'))
+    @ApiOperation({ summary: 'Update a product by ID' })
+    @ApiParam({ name: 'id', description: 'Product ID' })
+    @ApiBody({ type: UpdateProductDto })
+    @ApiResponse({ status: 200, description: 'Product updated', type: Product })
+    async update(
+        @Param('id') id: string,
+        @Body() updateProductDto: UpdateProductDto,
+        @UploadedFile() file: Express.Multer.File,
+    ): Promise<Product> {
+        return this.productsService.update(id, updateProductDto, file);
     }
 
     @Get()
